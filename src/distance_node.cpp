@@ -2,14 +2,15 @@
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Float32.h>
 #include <turtlesim/Pose.h>
+#include <assignment1_rt/distance.h>  // Include the custom message for distance
 #include <cmath>
 
 // Declare global publishers and position variables
-ros::Publisher stop_pub1;
-ros::Publisher stop_pub2;
-ros::Publisher distance_pub;
+ros::Publisher pub_turtle1;
+ros::Publisher pub_turtle2;
+ros::Publisher pub_distance;
 
-// Store the position of turtle1 globally with new names to avoid conflict
+// Store the position of turtle1 globally
 float turtle1_x, turtle1_y;
 
 // Distance threshold for stopping turtles
@@ -29,16 +30,18 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     // Calculate the distance between turtle1 and turtle2
     float distance = std::sqrt(std::pow(x2 - turtle1_x, 2) + std::pow(y2 - turtle1_y, 2));
 
-    // Publish the distance
-    std_msgs::Float32 dist_msg;
-    dist_msg.data = distance;
-    distance_pub.publish(dist_msg);
+    // Publish the distance to a custom message type
+    assignment1_rt::distance dist_msg;
+    dist_msg.distance = distance;
+
+    // Publish the custom distance message to the /turtle_distance_topic
+    pub_distance.publish(dist_msg);
 
     // Check if turtles are too close or near boundaries
     if (distance < threshold || x2 > 10.0 || y2 > 10.0 || x2 < 1.0 || y2 < 1.0) {
         geometry_msgs::Twist stop_msg;
-        stop_pub1.publish(stop_msg);
-        stop_pub2.publish(stop_msg);
+        pub_turtle1.publish(stop_msg);  // Stop turtle1
+        pub_turtle2.publish(stop_msg);  // Stop turtle2
         ROS_WARN("Turtles are too close or near boundaries. Stopping.");
     }
 }
@@ -47,15 +50,18 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "distance_node");
     ros::NodeHandle nh;
 
-    // Subscribe to the poses of turtle1 and turtle2
-    ros::Subscriber sub1 = nh.subscribe("turtle1/pose", 10, turtle1PoseCallback);
-    ros::Subscriber sub2 = nh.subscribe("turtle2/pose", 10, turtle2PoseCallback);
+    // Subscribers to get poses of turtle1 and turtle2
+    ros::Subscriber sub_turtle1 = nh.subscribe("/turtle1/pose", 10, turtle1PoseCallback);
+    ros::Subscriber sub_turtle2 = nh.subscribe("/turtle2/pose", 10, turtle2PoseCallback);
 
-    // Initialize the publishers for stopping turtles and publishing distance
-    stop_pub1 = nh.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 1);
-    stop_pub2 = nh.advertise<geometry_msgs::Twist>("turtle2/cmd_vel", 1);
-    distance_pub = nh.advertise<std_msgs::Float32>("distance", 1);
+    // Publishers for controlling turtle velocities
+    pub_turtle1 = nh.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 10);
+    pub_turtle2 = nh.advertise<geometry_msgs::Twist>("/turtle2/cmd_vel", 10);
 
+    // Publisher for publishing custom distance message (distance)
+    pub_distance = nh.advertise<assignment1_rt::distance>("distance_topic", 10);
+
+    // Spin to keep the node active
     ros::spin();
 
     return 0;
