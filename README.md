@@ -153,5 +153,3 @@ A key feature of the **C++** implementation is its handling of duplicate turtles
 
 --- 
 
-Let me know if you’d like further refinements!
-
