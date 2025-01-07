@@ -8,7 +8,7 @@ This repository contains the assignment work for the **Research Track** course, 
 ## Introduction
 This repository provides a ROS package that includes two primary nodes:
 -  **User Interface node**
--  **Distance Monitor node**
+-  **Distance  node**
 These nodes work together within the **`turtlesim`** simulation environment to create a simple, interactive system for controlling and monitoring two turtles.
 
 ## Node Overview
@@ -22,7 +22,7 @@ This node manages user input and controls the movements of two turtles (`turtle1
    - Define the linear and angular velocities for the selected turtle.  
 - Sending movement commands to the chosen turtle, enabling it to move for one second. Once the movement is complete, the turtle halts, and the interface becomes ready for the next command.
 
-### 2. Distance Monitor Node (distance_node)
+### 2. Distance Node (distance_node)
 
 This node ensures that the turtles maintain safe separation and remain within the simulation boundaries. It actively tracks and evaluates the positions of the turtles. Key functionalities include:  
 - Continuously calculating the distance between `turtle1` and `turtle2` and publishing this data to a dedicated ROS topic for monitoring.  
@@ -37,12 +37,12 @@ The root of this repository contains the package folder, which includes all the 
 
 ### Folder and File Descriptions
 - **`/msg`**: Holds custom message definitions.  
-  - `turtle_distance.msg`: Defines the custom message for distance and boundary status monitoring. Includes a `float32 distance` field used for publishing distances to `turtle_distance_topic`.
+  -  distance.msg`: Defines the custom message for distance and boundary status monitoring. Includes a `float32 distance` field used for publishing distances to `distance_topic`.
      
 
 - **`/src`**: Contains C++ source files.  
-  - `user_interface.cpp`: C++ implementation of the user interface node.  
-  - `distance_monitor.cpp`: C++ implementation of the distance monitor node.  
+  - `ui_node.cpp`: C++ implementation of the user interface node.  
+  - `distance_node.cpp`: C++ implementation of the distance monitor node.  
 
 - **`/CMakeLists.txt`**: Defines the package build rules.  
 
