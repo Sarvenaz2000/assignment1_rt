@@ -13,7 +13,7 @@ These nodes work together within the **`turtlesim`** simulation environment to c
 
 ## Node Overview
 
-### 1. User Interface Node (user_interface)
+### 1. User Interface Node (ui_node)
 
 This node manages user input and controls the movements of two turtles (`turtle1` and `turtle2`) within the simulation. Its main functionalities include:  
 - Adding a second turtle (`turtle2`) to the simulation environment.  
@@ -22,7 +22,7 @@ This node manages user input and controls the movements of two turtles (`turtle1
    - Define the linear and angular velocities for the selected turtle.  
 - Sending movement commands to the chosen turtle, enabling it to move for one second. Once the movement is complete, the turtle halts, and the interface becomes ready for the next command.
 
-### 2. Distance Monitor Node (distance_monitor)
+### 2. Distance Monitor Node (distance_node)
 
 This node ensures that the turtles maintain safe separation and remain within the simulation boundaries. It actively tracks and evaluates the positions of the turtles. Key functionalities include:  
 - Continuously calculating the distance between `turtle1` and `turtle2` and publishing this data to a dedicated ROS topic for monitoring.  
@@ -37,11 +37,8 @@ The root of this repository contains the package folder, which includes all the 
 
 ### Folder and File Descriptions
 - **`/msg`**: Holds custom message definitions.  
-  - `turtle_distance.msg`: Defines the custom message for distance and boundary status monitoring. Includes a `float32 distance` field used for publishing distances to `turtle_distance_topic`.  
-
-- **`/scripts`**: Contains Python scripts for the project nodes.  
-  - `user_interface.py`: Python implementation of the user interface node.  
-  - `distance_monitor.py`: Python implementation of the distance monitor node.  
+  - `turtle_distance.msg`: Defines the custom message for distance and boundary status monitoring. Includes a `float32 distance` field used for publishing distances to `turtle_distance_topic`.
+     
 
 - **`/src`**: Contains C++ source files.  
   - `user_interface.cpp`: C++ implementation of the user interface node.  
