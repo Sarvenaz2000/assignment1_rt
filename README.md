@@ -127,11 +127,11 @@ This opens the Turtlesim window, where `turtle1` and `turtle2` will appear.
 Ensure `roscore` and `turtlesim` are running, then:  
 - Start the **C++ User Interface Node**:  
 ```bash
-rosrun assignment1_rt user_interface
+rosrun assignment1_rt ui_node
 ```  
 - Start the **C++ Distance Monitor Node**:  
 ```bash
-rosrun assignment1_rt distance_monitor
+rosrun assignment1_rt distance_node
 ```  
 
 ---
